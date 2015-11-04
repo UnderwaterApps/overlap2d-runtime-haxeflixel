@@ -29,7 +29,7 @@ class CompositeItem extends FlxSpriteGroup
 		var tmpH = height;
 		for (sprite in _sprites)
 		{
-			sprite.y = (tmpH-sprite.frameHeight)-sprite.y;
+			sprite.y = (tmpH-sprite.height)-sprite.y;
 		}
 	}
 
@@ -57,6 +57,7 @@ class CompositeItem extends FlxSpriteGroup
 	private function buildImages(images:Array<Dynamic>):Void {
 		for(imageVO in images) {
             var image:FlxSprite = ir.getRegion(imageVO.imageName);
+            image.height = image.frameHeight;
             processMain(image, imageVO);
             add(image);
         }
@@ -65,6 +66,7 @@ class CompositeItem extends FlxSpriteGroup
 	private function buildSpriteAnimations(animations:Array<Dynamic>):Void {
 		for(animVO in animations) {
             var anim:FlxSprite = ir.getSpriteAnimation(animVO.animationName);
+            anim.height = anim.frameHeight;
             var frameRangeArray:Array<Dynamic> = animVO.frameRangeMap;
             var fps = animVO.fps;
             var looped:Bool = false;
