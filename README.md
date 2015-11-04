@@ -12,6 +12,11 @@ add(sl.getRoot());
 ```
 
 
+To get it ready for you
+```
+haxelib git overlap2d https://github.com/UnderwaterApps/overlap2d-runtime-haxeflixel master
+```
+
 ##**Note**
 
 This is just initial skeletal version that ONLY supports Images, Sprite Animations and Groups. Everything else to come soon.
