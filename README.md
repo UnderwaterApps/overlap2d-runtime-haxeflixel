@@ -10,3 +10,8 @@ var sl:SceneLoader = new SceneLoader();
 sl.loadScene("MainScene");
 add(sl.getRoot());
 ```
+
+
+*Note*
+
+This is just initial skeletal version that ONLY supports Images and Groups. Everything else to come soon.
