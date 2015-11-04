@@ -12,6 +12,6 @@ add(sl.getRoot());
 ```
 
 
-*** Note
+##**Note**
 
 This is just initial skeletal version that ONLY supports Images and Groups. Everything else to come soon.
