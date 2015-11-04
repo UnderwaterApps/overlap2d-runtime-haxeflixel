@@ -22,7 +22,7 @@ class ResourceManager implements IResourceRetriever
 
 	public function new() 
 	{
-		assetsPath = "assets/overlap2d/";		
+		assetsPath = "assets/";		
 
 		sceneMap = new Map();
 		spriteAnimations = new Map();
