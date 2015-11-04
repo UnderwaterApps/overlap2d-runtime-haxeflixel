@@ -40,6 +40,8 @@ class CompositeItem extends FlxSpriteGroup
 	}
 
 	private function processMain(sprite:FlxSprite, vo:Dynamic):Void {
+		if(vo.x == null) vo.x = 0;
+		if(vo.y == null) vo.y = 0;
 		sprite.x = vo.x * pixelsPerWU;
 		sprite.y = vo.y * pixelsPerWU;
 		sprite.origin.x = sprite.frameWidth/2;
