@@ -1,0 +1,11 @@
+{
+    "name": "overlap2d",
+    "url" : "http://overlap2d.com",
+    "license": "Apache2",
+    "tags": ["game", "openfl", "flash", "neko", "cpp", "android", "ios", "cross", "overlap2d", "runtime"],
+    "description": "This is an official runtime for Overlap2D editor scenes, based on HaxeFlixel.",
+    "version": "0.0.1",
+    "releasenote": "First version",
+    "contributors": ["azakhary"],
+    "dependencies": { "lime": "", "openfl": "", "flixel": "" }
+}
