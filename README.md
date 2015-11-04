@@ -14,4 +14,10 @@ add(sl.getRoot());
 
 ##**Note**
 
-This is just initial skeletal version that ONLY supports Images and Groups. Everything else to come soon.
+This is just initial skeletal version that ONLY supports Images, Sprite Animations and Groups. Everything else to come soon.
+
+
+##**How to Contribute**
+
+The detailed specification of what runtime should do is in [here](http://overlap2d.com/data-api-creating-custom-runtime/)
+Please read before you contribute.
