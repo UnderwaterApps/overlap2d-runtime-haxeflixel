@@ -19,7 +19,7 @@ class ResourceManager implements IResourceRetriever
 
 	public function new() 
 	{
-		assetsPath = "assets/overlap2d/";		
+		assetsPath = "assets/";		
 	}
 
 	public function loadAssets():Void {
