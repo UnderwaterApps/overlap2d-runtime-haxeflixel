@@ -15,16 +15,23 @@ class ResourceManager implements IResourceRetriever
 
 	var atlasRegions: FlxAtlasFrames;
 
+	var spriteAnimations: Map<String, FlxAtlasFrames>;
+
 	var projectVO:Dynamic;
+	var sceneMap: Map<String, Dynamic>;
 
 	public function new() 
 	{
-		assetsPath = "assets/";		
+		assetsPath = "assets/overlap2d/";		
+
+		sceneMap = new Map();
+		spriteAnimations = new Map();
 	}
 
 	public function loadAssets():Void {
 		loadProjectVO();
 		loadAtlas();
+		loadSpriteAnimations();
 	}
 
 	public function loadProjectVO():Void {
@@ -36,9 +43,30 @@ class ResourceManager implements IResourceRetriever
 		atlasRegions = FlxAtlasFrames.fromLibGdx(assetsPath + "orig/pack.png", assetsPath + "orig/pack.atlas");
 	}
 
+	public function loadSpriteAnimations():Void {
+		var sceneNameList:Array<Dynamic> = projectVO.scenes;
+		var anims:Array<String> = new Array();
+		for(sceneNm in sceneNameList) {
+			var scene = getSceneVO(sceneNm.sceneName);		
+			DataUtils.getSpriteAnimationsList(scene.composite, anims);
+		}
+
+		for(animName in anims) {
+			var path:String = assetsPath + "orig/sprite_animations/" + animName + "/";
+			var frames = FlxAtlasFrames.fromLibGdx(path + animName + ".png", path + animName + ".atlas");
+			spriteAnimations[animName] = frames;
+		}
+	}
+
 	public function getSceneVO(name:String):Dynamic {
+		if(sceneMap[name] != null) {
+			return sceneMap[name];
+		}
+
 		var content = Assets.getText(assetsPath + 'scenes/' + name + ".dt");
 		var data:Dynamic = Json.parse(content);
+
+		sceneMap[name] = data;
 
 		return data;
 	}
@@ -48,9 +76,17 @@ class ResourceManager implements IResourceRetriever
 	}
 
 	public function getRegion(name:String):FlxSprite {
-		var sprite: FlxSprite = new FlxSprite(0, 0);
+		var sprite: FlxSprite = new FlxSprite();
 		sprite.frames  = atlasRegions;
 		sprite.animation.frameName = name;
+		
+		return sprite;
+	}
+
+	public function getSpriteAnimation(name:String):FlxSprite {
+		var frames = spriteAnimations[name];
+		var sprite: FlxSprite = new FlxSprite();
+		sprite.frames  = frames;
 		
 		return sprite;
 	}

@@ -25,7 +25,6 @@ class CompositeItem extends FlxSpriteGroup
 		invertY();
 	}
 
-	// TODO: this is not supposed to be like this
 	private function invertY():Void {
 		var tmpH = height;
 		for (sprite in _sprites)
@@ -37,6 +36,7 @@ class CompositeItem extends FlxSpriteGroup
 	private function build(itemVO:Dynamic):Void {
 		if(itemVO.composite.sImages != null) buildImages(itemVO.composite.sImages);
 		if(itemVO.composite.sComposites != null) buildComposites(itemVO.composite.sComposites);
+		if(itemVO.composite.sSpriteAnimations != null) buildSpriteAnimations(itemVO.composite.sSpriteAnimations);
 	}
 
 	private function processMain(sprite:FlxSprite, vo:Dynamic):Void {
@@ -59,6 +59,25 @@ class CompositeItem extends FlxSpriteGroup
             add(image);
         }
 	}
+
+	private function buildSpriteAnimations(animations:Array<Dynamic>):Void {
+		for(animVO in animations) {
+            var anim:FlxSprite = ir.getSpriteAnimation(animVO.animationName);
+            var frameRangeArray:Array<Dynamic> = animVO.frameRangeMap;
+            var fps = animVO.fps;
+            var looped:Bool = false;
+            if(animVO.fps == null) fps = 24;            
+            if(animVO.playMode == 2) looped = true;   
+            for(range in frameRangeArray) {
+            	var frames = [for (i in range.startFrame...range.endFrame) i];
+            	anim.animation.add(range.name, frames, fps, looped);
+            }
+            anim.animation.play(animVO.currentAnimation);
+
+            processMain(anim, animVO);
+            add(anim);
+        }
+	}	
 
 	private function buildComposites(composites:Array<Dynamic>):Void {
 		for(compositeVo in composites) {
