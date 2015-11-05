@@ -71,8 +71,16 @@ class CompositeItem extends FlxSpriteGroup
 		if(vo.y == null) vo.y = 0;
 		sprite.x = vo.x * pixelsPerWU;
 		sprite.y = vo.y * pixelsPerWU;
+		
 		sprite.origin.x = sprite.frameWidth/2;
 		sprite.origin.y = sprite.frameHeight/2;
+
+		if(Std.is(sprite, CompositeItem)) {
+			// this is not right
+			sprite.origin.x = 0;
+			sprite.origin.y = sprite.height;
+		}
+
 		if(vo.rotation != null) sprite.angle = -vo.rotation;
 		if(vo.scaleX != null) sprite.scale.x = vo.scaleX;
 		if(vo.scaleY != null) sprite.scale.y = vo.scaleY;
