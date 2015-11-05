@@ -28,6 +28,7 @@ class SceneLoader
 		tmp.composite = sceneVO.composite;
 		tmp.x = 0;
 		tmp.y = 0;
+		tmp.height = FlxG.height;
 		root = new CompositeItem(tmp, rm);
 	}
 

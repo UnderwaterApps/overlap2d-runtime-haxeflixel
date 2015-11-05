@@ -12,6 +12,9 @@ class CompositeItem extends FlxSpriteGroup
 
 	var pixelsPerWU:Float;
 
+	var boundHeight: Float;
+
+
 	public function new(itemVO:Dynamic, ir:IResourceRetriever) 
 	{
 		super();
@@ -26,10 +29,14 @@ class CompositeItem extends FlxSpriteGroup
 	}
 
 	private function invertY():Void {
-		var tmpH = height;
+		boundHeight = height;
+		if(vo.height != null) boundHeight = vo.height;
 		for (sprite in _sprites)
 		{
-			sprite.y = (tmpH-sprite.height)-sprite.y;
+			var sprH = sprite.height;			
+			if(Std.is(sprite, CompositeItem)) sprH = cast(sprite, CompositeItem).boundHeight;
+
+			sprite.y = boundHeight - sprH- sprite.y;
 		}
 	}
 
