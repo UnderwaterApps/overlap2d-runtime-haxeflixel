@@ -75,17 +75,17 @@ class ResourceManager implements IResourceRetriever
 		return projectVO;
 	}
 
-	public function getRegion(name:String):FlxSprite {
-		var sprite: FlxSprite = new FlxSprite();
+	public function getRegion(name:String):O2DSprite {
+		var sprite: O2DSprite = new O2DSprite();
 		sprite.frames  = atlasRegions;
 		sprite.animation.frameName = name;
 		
 		return sprite;
 	}
 
-	public function getSpriteAnimation(name:String):FlxSprite {
+	public function getSpriteAnimation(name:String):O2DSprite {
 		var frames = spriteAnimations[name];
-		var sprite: FlxSprite = new FlxSprite();
+		var sprite: O2DSprite = new O2DSprite();
 		sprite.frames  = frames;
 		
 		return sprite;

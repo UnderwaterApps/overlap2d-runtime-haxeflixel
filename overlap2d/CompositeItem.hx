@@ -14,6 +14,9 @@ class CompositeItem extends FlxSpriteGroup
 
 	var boundHeight: Float;
 
+	var coreData: CoreItemData;
+
+ 	var layerMap: Map<String, LayerData>;
 
 	public function new(itemVO:Dynamic, ir:IResourceRetriever) 
 	{
@@ -24,6 +27,7 @@ class CompositeItem extends FlxSpriteGroup
 
 		pixelsPerWU = ir.getProjectVO().pixelToWorld;
 
+		makeLayerMap(vo);
 		build(vo);
 		invertY();
 	}
@@ -36,7 +40,7 @@ class CompositeItem extends FlxSpriteGroup
 			var sprH = sprite.height;			
 			if(Std.is(sprite, CompositeItem)) sprH = cast(sprite, CompositeItem).boundHeight;
 
-			sprite.y = boundHeight - sprH- sprite.y;
+			sprite.y = boundHeight - sprH - sprite.y;
 		}
 	}
 
@@ -44,6 +48,22 @@ class CompositeItem extends FlxSpriteGroup
 		if(itemVO.composite.sImages != null) buildImages(itemVO.composite.sImages);
 		if(itemVO.composite.sComposites != null) buildComposites(itemVO.composite.sComposites);
 		if(itemVO.composite.sSpriteAnimations != null) buildSpriteAnimations(itemVO.composite.sSpriteAnimations);
+
+		processZIndexes();
+	}
+
+	private function processZIndexes():Void {
+		// TODO: how does that work in flixel? need to order items 
+		// according to layer, and vo z-index.
+	}
+
+	private function makeLayerMap(itemVO:Dynamic):Void {
+		layerMap = new Map<String, LayerData>();
+		var layers:Array<Dynamic> = itemVO.composite.layers;
+        for(layer in layers) {
+        	var data: LayerData = {name: layer.layerName, visible: layer.isVsible};
+            layerMap.set(layer.layerName, data);
+        }
 	}
 
 	private function processMain(sprite:FlxSprite, vo:Dynamic):Void {
@@ -59,11 +79,28 @@ class CompositeItem extends FlxSpriteGroup
 		if(vo.tint != null) {
 			sprite.color = FlxColor.fromRGB(Math.round(vo.tint[0]*255), Math.round(vo.tint[1]*255), Math.round(vo.tint[2]*255), Math.round(vo.tint[3]*255));
 		}
+
+		// TODO: this casting sucks
+		if(Std.is(sprite, CompositeItem)) {        
+			cast(sprite, CompositeItem).coreData = buildCoreData(vo);
+		}
+		if(Std.is(sprite, O2DSprite)) {
+			cast(sprite, O2DSprite).coreData = buildCoreData(vo);	
+		}
+	}
+
+	private function buildCoreData(vo:Dynamic): CoreItemData {
+		var data:CoreItemData = new CoreItemData();
+		data.id = vo.itemIdentifier;
+		data.tags = vo.tags;
+		data.customVariables = DataUtils.readCustomVars(vo.customVars);
+
+		return data;
 	}
 
 	private function buildImages(images:Array<Dynamic>):Void {
 		for(imageVO in images) {
-            var image:FlxSprite = ir.getRegion(imageVO.imageName);
+            var image:O2DSprite = ir.getRegion(imageVO.imageName);
             image.height = image.frameHeight;
             processMain(image, imageVO);
             add(image);
@@ -72,7 +109,7 @@ class CompositeItem extends FlxSpriteGroup
 
 	private function buildSpriteAnimations(animations:Array<Dynamic>):Void {
 		for(animVO in animations) {
-            var anim:FlxSprite = ir.getSpriteAnimation(animVO.animationName);
+            var anim:O2DSprite = ir.getSpriteAnimation(animVO.animationName);
             anim.height = anim.frameHeight;
             var frameRangeArray:Array<Dynamic> = animVO.frameRangeMap;
             var fps = animVO.fps;
@@ -97,5 +134,11 @@ class CompositeItem extends FlxSpriteGroup
             add(composite);
         }
 	}
+
+}
+
+typedef LayerData = {
+  var name : String;
+  var visible : Bool;
 }
  

@@ -21,5 +21,21 @@ class DataUtils
 		return list;
 	}
 
+	public static function readCustomVars(varString: String): Map<String, String> {
+		if(varString == null ||varString.length == 0) return new Map<String, String>();
+
+		var result: Map<String, String> = new Map<String, String>();
+
+        var vars:Array<String>  = varString.split(";");
+        for(varItem in vars) {
+            var tmp:Array<String> = varItem.split(":");
+            if(tmp.length > 1) {
+                result.set(tmp[0], tmp[1]);
+            }
+        }
+
+        return result;
+	}
+
 }
  
