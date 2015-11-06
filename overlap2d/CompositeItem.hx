@@ -4,7 +4,7 @@ import flixel.FlxSprite;
 import flixel.group.FlxSpriteGroup;
 import flixel.util.FlxColor;
 
-class CompositeItem extends FlxSpriteGroup
+class CompositeItem extends FlxSpriteGroup implements O2DCoreItem
 {
 
 	var ir:IResourceRetriever;
@@ -14,9 +14,13 @@ class CompositeItem extends FlxSpriteGroup
 
 	var boundHeight: Float;
 
+	private var itemId: String;
+
 	var coreData: CoreItemData;
 
  	var layerMap: Map<String, LayerData>;
+
+ 	var childrenMap: Map<String, O2DCoreItem>;
 
 	public function new(itemVO:Dynamic, ir:IResourceRetriever) 
 	{
@@ -45,6 +49,7 @@ class CompositeItem extends FlxSpriteGroup
 	}
 
 	private function build(itemVO:Dynamic):Void {
+		childrenMap = new Map<String, O2DCoreItem>();
 		if(itemVO.composite.sImages != null) buildImages(itemVO.composite.sImages);
 		if(itemVO.composite.sComposites != null) buildComposites(itemVO.composite.sComposites);
 		if(itemVO.composite.sSpriteAnimations != null) buildSpriteAnimations(itemVO.composite.sSpriteAnimations);
@@ -67,6 +72,9 @@ class CompositeItem extends FlxSpriteGroup
 	}
 
 	private function processMain(sprite:FlxSprite, vo:Dynamic):Void {
+		
+		var spriteCore: O2DCoreItem = cast(sprite, O2DCoreItem);
+
 		if(vo.x == null) vo.x = 0;
 		if(vo.y == null) vo.y = 0;
 		sprite.x = vo.x * pixelsPerWU;
@@ -88,18 +96,16 @@ class CompositeItem extends FlxSpriteGroup
 			sprite.color = FlxColor.fromRGB(Math.round(vo.tint[0]*255), Math.round(vo.tint[1]*255), Math.round(vo.tint[2]*255), Math.round(vo.tint[3]*255));
 		}
 
-		// TODO: this casting sucks
-		if(Std.is(sprite, CompositeItem)) {        
-			cast(sprite, CompositeItem).coreData = buildCoreData(vo);
-		}
-		if(Std.is(sprite, O2DSprite)) {
-			cast(sprite, O2DSprite).coreData = buildCoreData(vo);	
+		spriteCore.setCoreData(buildCoreData(vo));
+		spriteCore.setId(vo.itemIdentifier);
+
+		if(vo.itemIdentifier != null) {
+			childrenMap.set(vo.itemIdentifier, spriteCore);
 		}
 	}
 
 	private function buildCoreData(vo:Dynamic): CoreItemData {
 		var data:CoreItemData = new CoreItemData();
-		data.id = vo.itemIdentifier;
 		data.tags = vo.tags;
 		data.customVariables = DataUtils.readCustomVars(vo.customVars);
 
@@ -141,6 +147,35 @@ class CompositeItem extends FlxSpriteGroup
             processMain(composite, compositeVo);
             add(composite);
         }
+	}
+
+	public function getId():String {
+		return itemId;
+	}
+
+	public function getCoreData():CoreItemData {
+		return coreData;
+	}
+
+	public function setId(id :String): Void {
+		itemId = id;
+	}
+
+	public function setCoreData(data:CoreItemData): Void {
+		coreData = data;
+	}
+
+	public function getChild(name: String):O2DCoreItem {
+		if(childrenMap.exists(name)) {
+			return childrenMap.get(name);
+		} else {
+			throw "No child with id: " + name;
+			return this;
+		}	
+	}
+
+	public function getFlxSprite(): FlxSprite {
+		return this;
 	}
 
 }
