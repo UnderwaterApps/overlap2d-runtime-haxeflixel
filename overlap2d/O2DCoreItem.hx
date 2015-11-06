@@ -10,5 +10,6 @@ interface O2DCoreItem
 	public function setCoreData(data:CoreItemData): Void;
 	public function getChild(name: String):O2DCoreItem;
 	public function getFlxSprite(): FlxSprite;
+	public function findChildrenByTag(tag: String): Array<FlxSprite>; 
 }
  

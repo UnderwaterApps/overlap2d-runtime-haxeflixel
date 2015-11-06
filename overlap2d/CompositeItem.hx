@@ -174,6 +174,21 @@ class CompositeItem extends FlxSpriteGroup implements O2DCoreItem
 		}	
 	}
 
+	public function findChildrenByTag(tag: String): Array<FlxSprite> {
+		var result: Array<FlxSprite> = new Array<FlxSprite>();
+		for (sprite in _sprites) {
+			if(Std.is(sprite, O2DCoreItem)) {
+				var item: O2DCoreItem = cast(sprite, O2DCoreItem);
+				if(item.getCoreData().tags.indexOf(tag) != -1) {
+					result.push(sprite);
+				}
+			}
+		}	
+
+		return result;	
+	}
+
+
 	public function getFlxSprite(): FlxSprite {
 		return this;
 	}

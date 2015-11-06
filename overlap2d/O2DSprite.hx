@@ -33,5 +33,11 @@ class O2DSprite extends FlxSprite implements O2DCoreItem
 	public function getFlxSprite(): FlxSprite {
 		return this;
 	}
+
+	public function findChildrenByTag(tag: String): Array<FlxSprite> {
+		throw "O2DSprite instances do not have children";
+
+		return null;
+	}
 }
  
