@@ -1,7 +1,7 @@
 {
     "name": "overlap2d",
     "url" : "http://overlap2d.com",
-    "license": "Apache License, Version 2.0",
+    "license": "GPL",
     "tags": ["game", "openfl", "flash", "neko", "android", "ios", "cross", "overlap2d", "runtime"],
     "description": "This is an official runtime for Overlap2D edito, based on HaxeFlixel",
     "version": "0.0.1",
