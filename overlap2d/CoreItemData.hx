@@ -8,5 +8,17 @@ class CoreItemData
 	public function new() 
 	{
 	}
+
+	public function hasTag(tag: String): Bool {
+		if(tags.indexOf(tag) != -1) {
+			return true;
+		}
+
+		return false;
+	}
+
+	public function getVar(key: String): String {
+		return customVariables.get(key);
+	}
 }
  
