@@ -10,7 +10,7 @@ sl.loadScene("MainScene");
 add(sl.getRoot());
 ```
 
-To learn more start be our Getting Started guide in [WIKI](https://github.com/UnderwaterApps/overlap2d-runtime-haxeflixel/wiki)
+Learn more by reading getting started guide from our [wiki](https://github.com/UnderwaterApps/overlap2d-runtime-haxeflixel/wiki)
 
 
 ##**How to Contribute**
