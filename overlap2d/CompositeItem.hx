@@ -29,7 +29,14 @@ class CompositeItem extends FlxSpriteGroup implements O2DCoreItem
 		this.ir = ir;
 		this.vo = itemVO;
 
-		pixelsPerWU = ir.getProjectVO().pixelToWorld;
+		if(ir.getProjectVO().pixelsPerWU == null)
+		{
+			pixelsPerWU = 1; // temp check if value is missing
+		}
+		else
+		{
+			pixelsPerWU = ir.getProjectVO().pixelToWorld;
+		}
 
 		makeLayerMap(vo);
 		build(vo);
